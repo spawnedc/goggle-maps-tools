@@ -6,7 +6,7 @@ import map from "../data/Map.json" with { type: "json" }
 import areaTable from "../data/AreaTable.json" with { type: "json" }
 import worldMapArea from "../data/WorldMapArea.json" with { type: "json" }
 
-import { arrayByObjecKey, floatToPrecision } from "./utils.mjs"
+import { arrayByObjecKey, getXYScale } from "./utils.mjs"
 import { EXPORT_DIR } from "./constants.mjs"
 
 // See: https://wowdev.wiki/DB/AreaTable
@@ -14,20 +14,6 @@ const IS_CITY_FLAG = 312
 
 const mapById = arrayByObjecKey(map, "ID")
 const areaById = arrayByObjecKey(areaTable, "ID")
-
-// According to carbonite, LocLeft: y1, LocRight: y2, LocTop: x1, LocBottom: x2
-// Data comes from WorldMapArea.dbc
-const getXYScale = ({ LocLeft, LocRight, LocTop, LocBottom }) => {
-  const scale = (-LocRight + LocLeft) / 500
-  const x = -LocLeft / 5
-  const y = -LocTop / 5
-
-  return {
-    scale: floatToPrecision(scale, 4),
-    x: floatToPrecision(x, 4),
-    y: floatToPrecision(y, 4),
-  }
-}
 
 const data = continents.map((continent) => {
   const continentAreaData = worldMapArea.find(
