@@ -1,0 +1,16 @@
+{
+  "name": "spwmap-tools",
+  "version": "1.0.1",
+  "description": "Tools for SpwMap",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.mjs"
+  },
+  "author": "spawnedc",
+  "dependencies": {
+    "json_to_lua": "^1.1.1"
+  },
+  "devDependencies": {
+    "prettier": "^4.0.0-alpha.12"
+  }
+}
