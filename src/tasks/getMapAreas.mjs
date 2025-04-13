@@ -1,4 +1,4 @@
-import { jsObjectToLua } from "json_to_lua"
+import { jsObjectToLuaPretty } from "json_to_lua"
 import continents from "../../data/WorldMapContinent.json" with { type: "json" }
 import map from "../../data/Map.json" with { type: "json" }
 import areaTable from "../../data/AreaTable.json" with { type: "json" }
@@ -52,7 +52,7 @@ export const getMapAreas = () => {
 
   const worldAreasById = arrayByObjecKey(data.flat(), "id", true)
 
-  const luaContent = jsObjectToLua(worldAreasById)
+  const luaContent = jsObjectToLuaPretty(worldAreasById)
 
   const content = ["setfenv(1, SpwMap)", `SpwMap.Map.Area = ${luaContent}`]
 
