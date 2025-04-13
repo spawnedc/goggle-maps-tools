@@ -7,10 +7,7 @@ import areaTable from "../data/AreaTable.json" with { type: "json" }
 import worldMapArea from "../data/WorldMapArea.json" with { type: "json" }
 
 import { arrayByObjecKey, getXYScale } from "./utils.mjs"
-import { EXPORT_DIR } from "./constants.mjs"
-
-// See: https://wowdev.wiki/DB/AreaTable
-const IS_CITY_FLAG = 312
+import { EXPORT_DIR, IS_CITY_FLAG } from "./constants.mjs"
 
 const mapById = arrayByObjecKey(map, "ID")
 const areaById = arrayByObjecKey(areaTable, "ID")
