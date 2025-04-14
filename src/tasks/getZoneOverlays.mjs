@@ -23,7 +23,7 @@ export const getWorldMapOverlay = () => {
   const groups = Object.groupBy(overlays, (o) => o.MapArea)
   const keys = Object.keys(groups)
 
-  const dayt = keys.reduce((acc, key) => {
+  const groupedOverlays = keys.reduce((acc, key) => {
     return {
       ...acc,
       [key]: groups[key].reduce(
@@ -36,22 +36,7 @@ export const getWorldMapOverlay = () => {
     }
   }, {})
 
-  const entries = Object.entries(groups).reduce((group, [key, value]) => {
-    return (
-      {
-        ...group,
-        [key]: value.reduce((agg, { TextureName, OverlayString }) => {
-          return {
-            ...agg,
-            [TextureName]: OverlayString,
-          }
-        }, {}),
-      },
-      {}
-    )
-  })
-
-  const luaContent = jsObjectToLuaPretty(dayt)
+  const luaContent = jsObjectToLuaPretty(groupedOverlays)
 
   const content = ["setfenv(1, SpwMap)", `SpwMap.Map.Overlay = ${luaContent}`]
 
