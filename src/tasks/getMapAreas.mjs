@@ -7,6 +7,11 @@ import worldMapArea from "../../data/WorldMapArea.json" with { type: "json" }
 import { arrayByObjecKey, getXYScale } from "../utils.mjs"
 import { IS_CITY_FLAG } from "../constants.mjs"
 
+const ID_MAP = {
+  1: 2,
+  2: 1,
+}
+
 export const getMapAreas = () => {
   const mapById = arrayByObjecKey(map, "ID")
   const areaById = arrayByObjecKey(areaTable, "ID")
@@ -16,7 +21,14 @@ export const getMapAreas = () => {
       (wma) => wma.MapID === continent.MapID && wma.AreaID === 0,
     )
 
-    const baseId = continent.ID * 1000
+    // This is where it gets ridiculous. According to the DBC:
+    // 1: Azeroth (Eastern Kingdoms)
+    // 2: Kalimdor
+    //
+    // However, according to the game, they are swapped...
+    // Only the `baseId` calculation below is affected.
+    // So we have to do dirty work here.
+    const baseId = (ID_MAP[continent.ID] || continent.ID) * 1000
 
     const continentData = {
       id: baseId,
