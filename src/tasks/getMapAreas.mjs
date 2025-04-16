@@ -1,7 +1,7 @@
-import continents from "../../data/WorldMapContinent.json" with { type: "json" }
-import map from "../../data/Map.json" with { type: "json" }
-import areaTable from "../../data/AreaTable.json" with { type: "json" }
-import worldMapArea from "../../data/WorldMapArea.json" with { type: "json" }
+import continents from "../../data/DBFilesClient/WorldMapContinent.json" with { type: "json" }
+import map from "../../data/DBFilesClient/Map.json" with { type: "json" }
+import areaTable from "../../data/DBFilesClient/AreaTable.json" with { type: "json" }
+import worldMapArea from "../../data/DBFilesClient/WorldMapArea.json" with { type: "json" }
 
 import { arrayByObjecKey, getXYScale } from "../utils.mjs"
 import { IS_CITY_FLAG } from "../constants.mjs"

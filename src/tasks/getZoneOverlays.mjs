@@ -1,7 +1,5 @@
-import { jsObjectToLuaPretty } from "json_to_lua"
-
-import worldMapOverlay from "../../data/WorldMapOverlay.json" with { type: "json" }
-import worldMapArea from "../../data/WorldMapArea.json" with { type: "json" }
+import worldMapOverlay from "../../data/DBFilesClient/WorldMapOverlay.json" with { type: "json" }
+import worldMapArea from "../../data/DBFilesClient/WorldMapArea.json" with { type: "json" }
 import { floatToPrecision } from "../utils.mjs"
 
 export const getWorldMapOverlay = (mapAreas) => {
