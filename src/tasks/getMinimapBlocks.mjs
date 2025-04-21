@@ -15,8 +15,9 @@ export const getMinimapBlocks = () => {
 
   let currentDir
 
-  contents.split("\r\n").forEach((line) => {
+  contents.split("\n").forEach((line) => {
     if (line.startsWith("dir: ")) {
+      console.info(line)
       const dirName = line.replace("dir: ", "")
       if (supportedMaps.includes(dirName)) {
         currentDir = dirName

@@ -5,11 +5,13 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.mjs"
+    "start": "node src/index.mjs",
+    "export": "node src/tools/index.js"
   },
   "author": "spawnedc",
   "dependencies": {
-    "json_to_lua": "^1.1.1"
+    "json_to_lua": "^1.1.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@types/node": "^22.14.1",

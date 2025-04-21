@@ -20,6 +20,10 @@ export const getMapAreas = () => {
       (wma) => wma.MapID === continent.MapID && wma.AreaID === 0,
     )
 
+    if (!continentAreaData) {
+      return undefined
+    }
+
     // This is where it gets ridiculous. According to the DBC:
     // 1: Azeroth (Eastern Kingdoms)
     // 2: Kalimdor
@@ -31,7 +35,7 @@ export const getMapAreas = () => {
 
     const continentData = {
       id: baseId,
-      name: mapById[continent.MapID].MapName_enUS,
+      name: mapById[continent.MapID].MapName,
       ...getXYScale(continentAreaData),
     }
 
@@ -41,7 +45,7 @@ export const getMapAreas = () => {
 
     const areasData = areas.map((area, index) => {
       return {
-        name: areaById[area.AreaID].AreaName_enUS,
+        name: areaById[area.AreaID].AreaName,
         ...getXYScale(area),
         overlay: area.AreaName.toLocaleLowerCase(),
         ...(areaById[area.AreaID].Flags === IS_CITY_FLAG
@@ -61,7 +65,11 @@ export const getMapAreas = () => {
     ]
   })
 
-  const worldAreasById = arrayByObjecKey(data.flat(), "id", true)
+  const worldAreasById = arrayByObjecKey(
+    data.filter((d) => d).flat(),
+    "id",
+    true,
+  )
 
   return worldAreasById
 }
