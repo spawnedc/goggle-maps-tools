@@ -1,13 +1,11 @@
 import { readFileSync } from "fs"
 import { join } from "path"
+import { EXPORT_DIR } from "../constants.mjs"
 
 export const getMinimapBlocks = () => {
-  const contents = readFileSync(
-    join(process.cwd(), "data/textures/Minimap/md5translate.trs"),
-    {
-      encoding: "utf-8",
-    },
-  )
+  const contents = readFileSync(join(EXPORT_DIR, "dbc", "md5translate.trs"), {
+    encoding: "utf-8",
+  })
 
   const supportedMaps = ["Azeroth", "Kalimdor"]
 
@@ -17,7 +15,6 @@ export const getMinimapBlocks = () => {
 
   contents.split("\n").forEach((line) => {
     if (line.startsWith("dir: ")) {
-      console.info(line)
       const dirName = line.replace("dir: ", "")
       if (supportedMaps.includes(dirName)) {
         currentDir = dirName

@@ -1,3 +1,16 @@
 # SpwMap Tools
 
 Tools for SpwMap
+
+## How to use
+
+SpwMap-Tools require the data to be extracted from MPQ files into DBC files, and DBC to be converted to JSON files to easily work with the data.
+
+1. Extract the data:
+   `npm run export -- <PATH_TO_WOW_DATA_FOLDER>`
+2. Create lua files fron the json files extracted above:
+   `npm start`
+3. Copy all the lua files in `exports/lua` to `<PATH_TO_SPWMAP>/data`
+
+> [!TIP]
+> If you already have extracted the data, you can simply run `npm start` to create the lua files.

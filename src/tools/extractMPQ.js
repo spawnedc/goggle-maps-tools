@@ -1,4 +1,5 @@
 import { readdir } from "fs/promises"
+import { existsSync, mkdirSync } from "fs"
 import { join } from "path"
 import { execSync } from "child_process"
 import { BASE_DIR } from "../constants.mjs"
@@ -20,7 +21,7 @@ const getPatchFiles = async (dataDir) => {
  * Exports files from MPQ files
  * @param {string} dataDir Wow Data directory where the MPQ files are stored
  * @param {string} dbcFile DBC file name to extract. It shouldn't be an absolute path
- * @param {string[]} filesToExport List of files to be exported e.g. ["DBFilesClient\\*"]
+ * @param {string} filesToExport Pattern of files to be exported e.g. "DBFilesClient\\*"
  * @param {string} exportDir Directory to export the files to
  */
 const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
@@ -29,9 +30,13 @@ const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
     BASE_COMMAND,
     `"${join(dataDir, dbcFile)}"`,
     `-o ${exportDir}`,
-    ...filesToExport.map((f) => `-e "${f}"`),
+    `-e "${filesToExport}"`,
     ...patchFiles.map((p) => `-p "${p}"`),
   ]
+
+  if (!existsSync(exportDir)) {
+    mkdirSync(exportDir, { recursive: true })
+  }
 
   console.info("Extracting from", dbcFile, "...")
   execSync(command.join(" \\\n\t"))

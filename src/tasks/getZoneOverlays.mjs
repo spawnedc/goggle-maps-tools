@@ -1,5 +1,5 @@
-import worldMapOverlay from "../../data/DBFilesClient/WorldMapOverlay.json" with { type: "json" }
-import worldMapArea from "../../data/DBFilesClient/WorldMapArea.json" with { type: "json" }
+import worldMapOverlay from "../../exports/json/WorldMapOverlay.json" with { type: "json" }
+import worldMapArea from "../../exports/json/WorldMapArea.json" with { type: "json" }
 import { floatToPrecision } from "../utils.mjs"
 
 export const getWorldMapOverlay = (mapAreas) => {
