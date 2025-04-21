@@ -29,13 +29,20 @@ export const getMinimapBlocks = () => {
 
       const [mapName, texture] = line.split("\t")
 
-      const coordinateId = mapName
+      const coordinates = mapName
         .replace(`${currentDir}\\map`, "")
         .replace(".blp", "")
-        .replace("_", "")
+
+      const coordinateId = coordinates
+        .split("_")
+        .map((n) => parseInt(n, 10))
+        .map((n) => (n < 10 ? `0${n}` : `${n}`))
+        .join("")
 
       try {
-        minimapBlocks[currentDir][coordinateId] = texture.replace(".blp", "")
+        minimapBlocks[currentDir][coordinateId] = texture
+          .replace(".blp", "")
+          .replace("\\", "\\\\")
       } catch {
         // empty line
       }
