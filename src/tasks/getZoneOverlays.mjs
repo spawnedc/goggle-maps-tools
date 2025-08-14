@@ -24,7 +24,7 @@ export const getWorldMapOverlay = (mapAreas) => {
       HitRectBottom,
     }) => {
       const x = floatToPrecision((HitRectLeft / 1024) * 100, 2)
-      const y = floatToPrecision((HitRectTop / 1024) * 100, 2)
+      const y = floatToPrecision((HitRectTop / 768) * 100, 2)
       const w = HitRectRight - HitRectLeft
       const h = HitRectBottom - HitRectTop
 
