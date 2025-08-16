@@ -23,10 +23,10 @@ export const getWorldMapOverlay = (mapAreas) => {
       HitRectRight,
       HitRectBottom,
     }) => {
-      const x = floatToPrecision((HitRectLeft / 1024) * 100, 2)
-      const y = floatToPrecision((HitRectTop / 768) * 100, 2)
-      const w = HitRectRight - HitRectLeft
-      const h = HitRectBottom - HitRectTop
+      const x = floatToPrecision((HitRectLeft / 1022) * 100, 2)
+      const y = floatToPrecision((HitRectTop / 668) * 100, 2)
+      const w = floatToPrecision(((HitRectRight - HitRectLeft) / 1002) * 100, 2)
+      const h = floatToPrecision(((HitRectBottom - HitRectTop) / 668) * 100, 2)
 
       const MapAreaName = worldMapArea
         .find(({ ID }) => ID === MapArea)
