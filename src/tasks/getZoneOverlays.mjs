@@ -9,11 +9,13 @@ export const getWorldMapOverlay = (mapAreas) => {
       spwMapId,
     }),
   )
+  const enrichedMapAreasByAreaId = Object.groupBy(enrichedMapAreas, (a => a.areaId))
 
   const overlays = worldMapOverlay.map(
     ({
       TextureName,
       MapArea,
+      AreaID_1,
       OffsetX,
       OffsetY,
       TextureWidth,
@@ -28,13 +30,16 @@ export const getWorldMapOverlay = (mapAreas) => {
       const w = floatToPrecision(((HitRectRight - HitRectLeft) / 1002) * 100, 2)
       const h = floatToPrecision(((HitRectBottom - HitRectTop) / 668) * 100, 2)
 
-      const MapAreaName = worldMapArea
-        .find(({ ID }) => ID === MapArea)
-        .AreaName.toLowerCase()
+      const mapArea = worldMapArea.find(({ ID }) => ID === MapArea)
+      const MapAreaName = mapArea.AreaName.toLowerCase()
 
-      const spwMapId = enrichedMapAreas.find(
+      const areaInfo = enrichedMapAreas.find(
         (area) => area.overlay === MapAreaName,
-      )?.spwMapId
+      )
+
+      const realArea = enrichedMapAreasByAreaId[AreaID_1]?.[0]
+      const isCity = realArea?.isCity
+      const spwMapId = isCity ? realArea?.spwMapId : areaInfo?.spwMapId
 
       return {
         TextureName: TextureName.toLowerCase(),
@@ -42,6 +47,7 @@ export const getWorldMapOverlay = (mapAreas) => {
         OverlayString: `${OffsetX},${OffsetY},${TextureWidth},${TextureHeight}`,
         HotspotString: `${x}^${y}^${w}^${h}`,
         SpwMapId: spwMapId,
+        isCity
       }
     },
   )

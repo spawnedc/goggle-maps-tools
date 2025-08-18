@@ -46,6 +46,7 @@ export const getMapAreas = () => {
     const areasData = areas.map((area, index) => {
       return {
         name: areaById[area.AreaID].AreaName,
+        areaId: area.AreaID,
         ...getXYScale(area),
         overlay: area.AreaName.toLocaleLowerCase(),
         ...(areaById[area.AreaID].Flags === IS_CITY_FLAG
