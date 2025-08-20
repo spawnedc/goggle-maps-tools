@@ -114,6 +114,16 @@ class DBC {
                 pointer += 1
                 break
               case 'loc':
+                value = strings[recordData.readInt32LE(pointer)]
+                pointer += 32
+                // for (let i = 0; i <= 7; i++) {
+                //   const loc = strings[recordData.readInt32LE(pointer)]
+                //   row[i === 0 ? colName : `${colName}_${i}`] = loc
+                //   pointer += 4
+                // }
+                // const mask = strings[recordData.readInt32LE(pointer)]
+                // row[`${colName}_Mask`] = mask
+                break
               case 'string':
                 value = strings[recordData.readInt32LE(pointer)]
                 break
@@ -124,7 +134,7 @@ class DBC {
 
             row[colName] = value
 
-            if (type !== 'byte' && type !== 'null' && type !== 'localization') {
+            if (type !== 'byte' && type !== 'null') {
               pointer += 4
             }
           })
