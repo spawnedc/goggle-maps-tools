@@ -47,15 +47,15 @@ export const getMapAreas = () => {
       (wma) => wma.MapID === continent.MapID && wma.AreaID !== 0,
     )
 
-    const areasData = areas.map((area, index) => {
+    const areasData = areas.map((worldMapArea, index) => {
+      const area = areaById[worldMapArea.AreaID]
       return {
-        name: areaById[area.AreaID].AreaName,
-        areaId: area.AreaID,
-        ...getXYScale(area),
-        overlay: area.AreaName.toLocaleLowerCase(),
-        ...(areaById[area.AreaID].Flags === IS_CITY_FLAG
-          ? { isCity: true }
-          : {}),
+        name: area.AreaName,
+        areaId: worldMapArea.AreaID,
+        ...getXYScale(worldMapArea),
+        overlay: worldMapArea.AreaName.toLocaleLowerCase(),
+        faction: area.FactionGroupMask, // 0: contested, 2: alliance, 4: horde
+        ...(area.Flags === IS_CITY_FLAG ? { isCity: true } : {}),
       }
     })
 
