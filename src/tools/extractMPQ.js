@@ -21,16 +21,19 @@ const getPatchFiles = async (dataDir) => {
  * Exports files from MPQ files
  * @param {string} dataDir Wow Data directory where the MPQ files are stored
  * @param {string} dbcFile DBC file name to extract. It shouldn't be an absolute path
- * @param {string} filesToExport Pattern of files to be exported e.g. "DBFilesClient\\*"
+ * @param {string | string[]} filesToExport Pattern of files to be exported e.g. "DBFilesClient\\*"
  * @param {string} exportDir Directory to export the files to
  */
 const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
   const patchFiles = await getPatchFiles(dataDir)
+  const exportList = Array.isArray(filesToExport)
+    ? filesToExport
+    : [filesToExport]
   const command = [
     BASE_COMMAND,
     `"${join(dataDir, dbcFile)}"`,
     `-o ${exportDir}`,
-    `-e "${filesToExport}"`,
+    ...exportList.map((f) => `-e "${f}"`),
     ...patchFiles.map((p) => `-p "${p}"`),
   ]
 
