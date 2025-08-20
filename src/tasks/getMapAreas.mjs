@@ -1,10 +1,14 @@
-import continents from "../../exports/json/WorldMapContinent.json" with { type: "json" }
-import map from "../../exports/json/Map.json" with { type: "json" }
-import areaTable from "../../exports/json/AreaTable.json" with { type: "json" }
-import worldMapArea from "../../exports/json/WorldMapArea.json" with { type: "json" }
+import continents from '../../exports/json/WorldMapContinent.json' with {
+  type: 'json',
+}
+import map from '../../exports/json/Map.json' with { type: 'json' }
+import areaTable from '../../exports/json/AreaTable.json' with { type: 'json' }
+import worldMapArea from '../../exports/json/WorldMapArea.json' with {
+  type: 'json',
+}
 
-import { arrayByObjecKey, getXYScale } from "../utils.mjs"
-import { IS_CITY_FLAG } from "../constants.mjs"
+import { arrayByObjecKey, getXYScale } from '../utils.mjs'
+import { IS_CITY_FLAG } from '../constants.mjs'
 
 const ID_MAP = {
   1: 2,
@@ -12,8 +16,8 @@ const ID_MAP = {
 }
 
 export const getMapAreas = () => {
-  const mapById = arrayByObjecKey(map, "ID")
-  const areaById = arrayByObjecKey(areaTable, "ID")
+  const mapById = arrayByObjecKey(map, 'ID')
+  const areaById = arrayByObjecKey(areaTable, 'ID')
 
   const data = continents.map((continent) => {
     const continentAreaData = worldMapArea.find(
@@ -68,7 +72,7 @@ export const getMapAreas = () => {
 
   const worldAreasById = arrayByObjecKey(
     data.filter((d) => d).flat(),
-    "id",
+    'id',
     true,
   )
 

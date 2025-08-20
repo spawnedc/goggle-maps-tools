@@ -1,24 +1,24 @@
-import { readFileSync } from "fs"
-import { join } from "path"
-import { EXPORT_DIR } from "../constants.mjs"
+import { readFileSync } from 'fs'
+import { join } from 'path'
+import { EXPORT_DIR } from '../constants.mjs'
 
 export const getMinimapBlocks = () => {
-  const contents = readFileSync(join(EXPORT_DIR, "dbc", "md5translate.trs"), {
-    encoding: "utf-8",
+  const contents = readFileSync(join(EXPORT_DIR, 'dbc', 'md5translate.trs'), {
+    encoding: 'utf-8',
   })
 
-  const supportedMaps = ["Azeroth", "Kalimdor"]
+  const supportedMaps = ['Azeroth', 'Kalimdor']
 
   const minimapBlocks = {}
 
   let currentDir
 
   contents
-    .replace(/\r\n/g, "\n")
-    .split("\n")
+    .replace(/\r\n/g, '\n')
+    .split('\n')
     .forEach((line) => {
-      if (line.startsWith("dir: ")) {
-        const dirName = line.replace("dir: ", "")
+      if (line.startsWith('dir: ')) {
+        const dirName = line.replace('dir: ', '')
         if (supportedMaps.includes(dirName)) {
           currentDir = dirName
           minimapBlocks[currentDir] = {}
@@ -30,25 +30,25 @@ export const getMinimapBlocks = () => {
           minimapBlocks[currentDir] = {}
         }
 
-        const [mapName, texture] = line.split("\t")
+        const [mapName, texture] = line.split('\t')
 
         const coordinates = mapName
-          .replace(`${currentDir}\\map`, "")
-          .replace(".blp", "")
+          .replace(`${currentDir}\\map`, '')
+          .replace('.blp', '')
 
         const coordinateId = coordinates
-          .split("_")
+          .split('_')
           .map((n) => parseInt(n, 10))
           .map((n) => (n < 10 ? `0${n}` : `${n}`))
-          .join("")
+          .join('')
 
         try {
           minimapBlocks[currentDir][coordinateId] = texture
-            .replace(".blp", "")
-            .replace("\\", "\\\\")
+            .replace('.blp', '')
+            .replace('\\', '\\\\')
         } catch {
           // empty line
-          console.info("error")
+          console.info('error')
         }
       }
     })

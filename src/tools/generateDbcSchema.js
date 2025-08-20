@@ -1,12 +1,12 @@
-import { readFileSync, writeFileSync } from "fs"
-import { xml2js } from "xml-js"
+import { readFileSync, writeFileSync } from 'fs'
+import { xml2js } from 'xml-js'
 
-import { BASE_DIR } from "../constants.mjs"
+import { BASE_DIR } from '../constants.mjs'
 
 const generateDbcSchema = () => {
   const definitions = readFileSync(
     `${BASE_DIR}/bin/WDBX.Editor/Definitions/Classic 1.12.1 (5875).xml`,
-    { encoding: "utf8" },
+    { encoding: 'utf8' },
   )
 
   const result = xml2js(definitions, { compact: true, spaces: 2 })

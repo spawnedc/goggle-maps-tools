@@ -14,7 +14,7 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
-    "prettier": "^4.0.0-alpha.12"
+    "@biomejs/biome": "^2.2.0",
+    "@types/node": "^22.14.1"
   }
 }

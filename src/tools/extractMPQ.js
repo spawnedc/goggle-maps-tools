@@ -1,15 +1,15 @@
-import { readdir } from "fs/promises"
-import { existsSync, mkdirSync } from "fs"
-import { join } from "path"
-import { execSync } from "child_process"
-import { BASE_DIR } from "../constants.mjs"
+import { readdir } from 'fs/promises'
+import { existsSync, mkdirSync } from 'fs'
+import { join } from 'path'
+import { execSync } from 'child_process'
+import { BASE_DIR } from '../constants.mjs'
 
 const BASE_COMMAND = `${BASE_DIR}/bin/MPQExtractor`
 
 const getPatchFiles = async (dataDir) => {
   const files = await readdir(dataDir)
   const patchFiles = files
-    .filter((f) => f.toLowerCase().startsWith("patch"))
+    .filter((f) => f.toLowerCase().startsWith('patch'))
     .map((f) => join(dataDir, f))
   const mainPatch = patchFiles.pop()
   patchFiles.unshift(mainPatch)
@@ -38,8 +38,8 @@ const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
     mkdirSync(exportDir, { recursive: true })
   }
 
-  console.info("Extracting from", dbcFile, "...")
-  execSync(command.join(" \\\n\t"))
+  console.info('Extracting from', dbcFile, '...')
+  execSync(command.join(' \\\n\t'))
 }
 
 export default extractMPQ

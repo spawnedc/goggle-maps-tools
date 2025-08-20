@@ -1,11 +1,11 @@
-import { readFile } from "fs/promises"
-import path from "path"
+import { readFile } from 'fs/promises'
+import path from 'path'
 const MAGIC_NUMBER = 1128416343 // TODO: what's this?
 
 class DBC {
   constructor(path, schemaName) {
     if (!schemaName) {
-      throw new Error("You must define a schemaName before continue.")
+      throw new Error('You must define a schemaName before continue.')
     }
 
     this.path = path
@@ -15,14 +15,14 @@ class DBC {
   async getSchema() {
     const schemaName = this.schemaName
     const schemaPath = `./schemas/${schemaName}.json`
-    const schema = await import(schemaPath, { with: { type: "json" } })
+    const schema = await import(schemaPath, { with: { type: 'json' } })
 
     return schema.default
   }
 
   parseStringBlock(buffer) {
     let pointer = 0
-    let currentString = ""
+    let currentString = ''
     let strings = []
 
     for (let i = 0; i < buffer.length; i++) {
@@ -30,7 +30,7 @@ class DBC {
 
       if (byte === 0) {
         strings[pointer - currentString.length] = currentString
-        currentString = ""
+        currentString = ''
       } else {
         currentString += String.fromCharCode(byte)
       }
@@ -45,7 +45,7 @@ class DBC {
     const dbc = this
     const schemaFields = await this.getSchema()
 
-    this.signature = ""
+    this.signature = ''
     this.records = 0
     this.fields = 0
     this.recordSize = 0
@@ -53,9 +53,9 @@ class DBC {
     return readFile(this.path)
       .then((data) => data)
       .then((buffer) => {
-        dbc.signature = buffer.toString("utf8", 0, 4)
+        dbc.signature = buffer.toString('utf8', 0, 4)
 
-        if (dbc.signature !== "WDBC") {
+        if (dbc.signature !== 'WDBC') {
           throw new Error(
             "DBC '" +
               path +
@@ -65,7 +65,7 @@ class DBC {
 
         if (buffer.readUInt32LE(0) !== MAGIC_NUMBER) {
           throw new Error(
-            "File isn't valid DBC (missing magic number: " + MAGIC_NUMBER + ")",
+            "File isn't valid DBC (missing magic number: " + MAGIC_NUMBER + ')',
           )
         }
 
@@ -97,24 +97,24 @@ class DBC {
           schemaFields.forEach(function (key, index) {
             let value
             let type = key.type
-            let colName = key.name || "field_" + (index + 1)
+            let colName = key.name || 'field_' + (index + 1)
 
             switch (type) {
-              case "int":
+              case 'int':
                 value = recordData.readInt32LE(pointer)
                 break
-              case "uint":
+              case 'uint':
                 value = recordData.readUInt32LE(pointer)
                 break
-              case "float":
+              case 'float':
                 value = recordData.readFloatLE(pointer)
                 break
-              case "byte":
+              case 'byte':
                 value = recordData.readInt8(pointer)
                 pointer += 1
                 break
-              case "loc":
-              case "string":
+              case 'loc':
+              case 'string':
                 value = strings[recordData.readInt32LE(pointer)]
                 break
               default:
@@ -124,7 +124,7 @@ class DBC {
 
             row[colName] = value
 
-            if (type !== "byte" && type !== "null" && type !== "localization") {
+            if (type !== 'byte' && type !== 'null' && type !== 'localization') {
               pointer += 4
             }
           })
