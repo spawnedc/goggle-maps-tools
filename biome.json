@@ -12,7 +12,7 @@
     "bracketSpacing": true,
     "expand": "auto",
     "useEditorconfig": true,
-    "includes": ["src", "!tools/extractJsonFromDbc/schemas"]
+    "includes": ["src/**/*", "!tools/extractJsonFromDbc/schemas"]
   },
   "linter": {
     "enabled": false

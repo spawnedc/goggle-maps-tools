@@ -22,7 +22,7 @@ const extractDBC = async (dbcName, { schema, dbcPath, outDir }) => {
   }
 
   writeFileSync(file, result)
-  console.log('Output file created: ' + file)
+  console.log('Output file created: ' + `${dbcName}.json`)
 }
 
 /**
