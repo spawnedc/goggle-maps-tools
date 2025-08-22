@@ -7,7 +7,7 @@ import worldMapArea from '../../exports/json/WorldMapArea.json' with {
   type: 'json',
 }
 
-import { arrayByObjecKey, getXYScale } from '../utils.mjs'
+import { arrayByObjecKey, getXYScale, hasFlag } from '../utils.mjs'
 import { IS_CITY_FLAG } from '../constants.mjs'
 
 const ID_MAP = {
@@ -52,10 +52,11 @@ export const getMapAreas = () => {
       return {
         name: area.AreaName,
         areaId: worldMapArea.AreaID,
+        mapId: worldMapArea.ID,
         ...getXYScale(worldMapArea),
         overlay: worldMapArea.AreaName.toLocaleLowerCase(),
         faction: area.FactionGroupMask, // 0: contested, 2: alliance, 4: horde
-        ...(area.Flags === IS_CITY_FLAG ? { isCity: true } : {}),
+        ...(hasFlag(area.Flags, IS_CITY_FLAG) ? { isCity: true } : {}),
       }
     })
 

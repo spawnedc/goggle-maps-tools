@@ -31,3 +31,28 @@ export const getXYScale = ({ LocLeft, LocRight, LocTop, LocBottom }) => {
     y: floatToPrecision(y, 4),
   }
 }
+
+const flags = []
+for (let i = 0; i < 32; i++) {
+  flags.push(Math.pow(2, i))
+}
+
+export const getFlagsFromMask = (mask) => {
+  const maskValues = []
+  const maskIndexes = []
+  let newMask = mask
+  while (newMask > 0) {
+    const maskIndex = flags.findIndex((flag) => flag > newMask) - 1
+    const maskValue = flags[maskIndex]
+    newMask -= maskValue
+    maskValues.push(maskValue)
+    maskIndexes.push(maskIndex + 1)
+  }
+
+  return maskIndexes
+}
+
+export const hasFlag = (mask, flag) => {
+  const flags = getFlagsFromMask(mask)
+  return flags.includes(flag)
+}
