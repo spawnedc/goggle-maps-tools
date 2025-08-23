@@ -23,8 +23,15 @@ const getPatchFiles = async (dataDir) => {
  * @param {string} dbcFile DBC file name to extract. It shouldn't be an absolute path
  * @param {string | string[]} filesToExport Pattern of files to be exported e.g. "DBFilesClient\\*"
  * @param {string} exportDir Directory to export the files to
+ * @param {boolean} keepFolderStructure Whether to keep folder structure or not. Default is false
  */
-const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
+const extractMPQ = async (
+  dataDir,
+  dbcFile,
+  filesToExport,
+  exportDir,
+  keepFolderStructure,
+) => {
   const patchFiles = await getPatchFiles(dataDir)
   const exportList = Array.isArray(filesToExport)
     ? filesToExport
@@ -36,6 +43,10 @@ const extractMPQ = async (dataDir, dbcFile, filesToExport, exportDir) => {
     ...exportList.map((f) => `-e "${f}"`),
     ...patchFiles.map((p) => `-p "${p}"`),
   ]
+
+  if (keepFolderStructure) {
+    command.push('-f')
+  }
 
   if (!existsSync(exportDir)) {
     mkdirSync(exportDir, { recursive: true })
