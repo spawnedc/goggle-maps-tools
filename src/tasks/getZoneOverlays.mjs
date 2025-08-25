@@ -6,10 +6,12 @@ import worldMapOverlay from '../../exports/json/WorldMapOverlay.json' with {
 }
 import { MAP_HEIGHT, MAP_WIDTH } from '../constants.mjs'
 import { AREA_ID_OVERRIDES } from '../overrides.mjs'
-import { floatToPrecision } from '../utils.mjs'
+import { arrayByObjecKey, floatToPrecision } from '../utils.mjs'
 
 const overlaysByMapId = Object.groupBy(worldMapOverlay, (o) => o.MapArea)
 const overlaysByAreaId = Object.groupBy(worldMapOverlay, (o) => o.AreaID_1)
+const worldMapAreaById = arrayByObjecKey(worldMapArea, 'ID')
+const worldMapAreaByAreaId = arrayByObjecKey(worldMapArea, 'AreaID')
 
 export const getWorldMapOverlay = (mapAreas) => {
   const enrichedMapAreas = Object.entries(mapAreas)
@@ -32,28 +34,37 @@ export const getWorldMapOverlay = (mapAreas) => {
       HitRectRight,
       HitRectBottom,
     },
-    spwMapId,
+    area,
   ) => {
-    const x = floatToPrecision((HitRectLeft / MAP_WIDTH) * 100, 2)
-    const y = floatToPrecision((HitRectTop / MAP_HEIGHT) * 100, 2)
-    const w = floatToPrecision(
-      ((HitRectRight - HitRectLeft) / MAP_WIDTH) * 100,
-      2,
-    )
-    const h = floatToPrecision(
-      ((HitRectBottom - HitRectTop) / MAP_HEIGHT) * 100,
-      2,
-    )
-
-    const mapArea = worldMapArea.find(({ ID }) => ID === MapArea)
+    const mapArea = worldMapAreaById[MapArea]
     const MapAreaName = mapArea.AreaName.toLowerCase()
+
+    let x1, y1, x2, y2, w, h
+
+    if (area.isCity) {
+      const cityArea = worldMapAreaByAreaId[area.areaId]
+      const { LocLeft, LocRight, LocTop, LocBottom } = cityArea
+      const yardsPerMapUnit = 5
+      x1 = floatToPrecision(-LocLeft / yardsPerMapUnit, 2)
+      y1 = floatToPrecision(LocBottom / yardsPerMapUnit, 2)
+      x2 = floatToPrecision(-LocRight / yardsPerMapUnit, 2)
+      y2 = floatToPrecision(LocTop / yardsPerMapUnit, 2)
+
+      w = x2 - x1
+      h = y2 - y1
+    } else {
+      x1 = floatToPrecision((HitRectLeft / MAP_WIDTH) * 100, 2)
+      y1 = floatToPrecision((HitRectTop / MAP_HEIGHT) * 100, 2)
+      w = floatToPrecision(((HitRectRight - HitRectLeft) / MAP_WIDTH) * 100, 2)
+      h = floatToPrecision(((HitRectBottom - HitRectTop) / MAP_HEIGHT) * 100, 2)
+    }
 
     return {
       TextureName: TextureName.toLowerCase(),
       MapArea: MapAreaName,
       OverlayString: `${OffsetX},${OffsetY},${TextureWidth},${TextureHeight}`,
-      HotspotString: `${x}^${y}^${w}^${h}^${TextureName}`,
-      SpwMapId: spwMapId,
+      HotspotString: `${x1}^${y1}^${w}^${h}^${TextureName}`,
+      SpwMapId: area.spwMapId,
     }
   }
 
@@ -63,14 +74,7 @@ export const getWorldMapOverlay = (mapAreas) => {
       const overlays =
         overlaysByMapId[area.mapId] || overlaysByAreaId[areaIdToUse]
 
-      if (!overlays) {
-        console.info(area.spwMapId, area.mapId, area.name)
-      }
-
-      return (
-        overlays?.map((overlay) => overlayToHotspot(overlay, area.spwMapId)) ||
-        []
-      )
+      return overlays?.map((overlay) => overlayToHotspot(overlay, area)) || []
     })
     .flat()
     .filter(Boolean)
