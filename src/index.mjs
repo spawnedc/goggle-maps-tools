@@ -1,6 +1,6 @@
-import { existsSync, writeFileSync, mkdirSync } from 'fs'
+import { existsSync, writeFileSync, mkdirSync, copyFileSync } from 'fs'
 import { jsObjectToLuaPretty } from 'json_to_lua'
-import { join } from 'path'
+import { join, resolve } from 'path'
 
 import { EXPORT_DIR } from './constants.mjs'
 import { getMapAreas } from './tasks/getMapAreas.mjs'
@@ -9,11 +9,13 @@ import { getMinimapBlocks } from './tasks/getMinimapBlocks.mjs'
 
 const LUA_DIR = join(EXPORT_DIR, 'lua')
 
-const [, , namespace = 'SpwMap'] = process.argv
+const [, , namespace = 'SpwMap', copyTo] = process.argv
 
 if (!existsSync(LUA_DIR)) {
   mkdirSync(LUA_DIR, { recursive: true })
 }
+
+const fileList = []
 
 console.info('Map areas...')
 const mapAreas = getMapAreas()
@@ -23,6 +25,7 @@ const mapAreasContent = [
   `${namespace}.Map.Area = ${mapAreasLuaContent}`,
 ]
 writeFileSync(join(LUA_DIR, `Map.Area.lua`), mapAreasContent.join('\n'))
+fileList.push(`Map.Area.lua`)
 
 console.info('Map overlays...')
 const { overlays, hotspots } = getWorldMapOverlay(mapAreas)
@@ -32,6 +35,7 @@ const overlaysContent = [
   `${namespace}.Map.Overlay = ${overlaysLuaContent}`,
 ]
 writeFileSync(join(LUA_DIR, `Map.Overlay.lua`), overlaysContent.join('\n'))
+fileList.push(`Map.Overlay.lua`)
 
 const hotspotsLuaContent = jsObjectToLuaPretty(hotspots)
 const hotspotsContent = [
@@ -39,6 +43,7 @@ const hotspotsContent = [
   `${namespace}.Map.Hotspots = ${hotspotsLuaContent}`,
 ]
 writeFileSync(join(LUA_DIR, `Map.Hotspots.lua`), hotspotsContent.join('\n'))
+fileList.push(`Map.Hotspots.lua`)
 
 console.info('Minimap blocks...')
 const minimapBlocks = getMinimapBlocks()
@@ -51,5 +56,12 @@ writeFileSync(
   join(LUA_DIR, `Map.MinimapBlocks.lua`),
   minimapBlocksContent.join('\n'),
 )
+fileList.push(`Map.MinimapBlocks.lua`)
+
+if (copyTo && existsSync(copyTo)) {
+  fileList.forEach((file) =>
+    copyFileSync(join(LUA_DIR, file), join(copyTo, file)),
+  )
+}
 
 console.info('Done!')
