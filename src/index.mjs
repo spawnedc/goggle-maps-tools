@@ -9,7 +9,9 @@ import { getMinimapBlocks } from './tasks/getMinimapBlocks.mjs'
 
 const LUA_DIR = join(EXPORT_DIR, 'lua')
 
-const [, , namespace = 'SpwMap', copyTo] = process.argv
+const [, , copyTo] = process.argv
+
+const namespace = 'GoggleMaps'
 
 if (!existsSync(LUA_DIR)) {
   mkdirSync(LUA_DIR, { recursive: true })
