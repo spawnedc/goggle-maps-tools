@@ -50,8 +50,8 @@ export const getWorldMapOverlay = (mapAreas) => {
       x2 = floatToPrecision(-LocRight / yardsPerMapUnit, 2)
       y2 = floatToPrecision(LocTop / yardsPerMapUnit, 2)
 
-      w = x2 - x1
-      h = y2 - y1
+      w = floatToPrecision(x2 - x1, 2)
+      h = floatToPrecision(y2 - y1, 2)
     } else {
       x1 = floatToPrecision((HitRectLeft / MAP_WIDTH) * 100, 2)
       y1 = floatToPrecision((HitRectTop / MAP_HEIGHT) * 100, 2)
