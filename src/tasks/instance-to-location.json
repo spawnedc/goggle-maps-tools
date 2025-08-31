@@ -1,0 +1,272 @@
+[
+  {
+    "name": "Ragefire Chasm",
+    "zone": "Orgrimmar",
+    "entryX": 52.19,
+    "entryY": 49.36
+  },
+  {
+    "name": "Wailing Caverns",
+    "zone": "The Barrens",
+    "entryX": 54.7,
+    "entryY": 66.9
+  },
+  {
+    "name": "Blackfathom Deeps",
+    "zone": "Ashenvale",
+    "entryX": 14.15,
+    "entryY": 13.9
+  },
+  {
+    "name": "Tower of Karazhan",
+    "zone": "Deadwind Pass",
+    "entryX": 47,
+    "entryY": 74.94
+  },
+  {
+    "name": "Razorfen Kraul",
+    "zone": "The Barrens",
+    "entryX": 43.59,
+    "entryY": 90.16
+  },
+  {
+    "name": "Razorfen Downs",
+    "zone": "The Barrens",
+    "entryX": 45.43,
+    "entryY": 89.48
+  },
+  {
+    "name": "Zul'Farrak",
+    "zone": "Tanaris",
+    "entryX": 38.73,
+    "entryY": 19.99
+  },
+  {
+    "name": "Maraudon",
+    "zone": "Desolace",
+    "entryX": 29.48,
+    "entryY": 62.53
+  },
+  {
+    "name": "Dire Maul",
+    "zone": "Feralas",
+    "entryX": 59.13,
+    "entryY": 45.16
+  },
+  {
+    "name": "Dire Maul (East)",
+    "zone": "Dire Maul",
+    "entryX": 81.57,
+    "entryY": 40.75
+  },
+  {
+    "name": "Dire Maul (North)",
+    "zone": "Dire Maul",
+    "entryX": 70.23,
+    "entryY": 13.77
+  },
+  {
+    "name": "Dire Maul (West)",
+    "zone": "Dire Maul",
+    "entryX": 57.5,
+    "entryY": 44
+  },
+  {
+    "name": "Onyxia's Lair",
+    "zone": "Dustwallow Marsh",
+    "entryX": 52.41,
+    "entryY": 76.39
+  },
+  {
+    "name": "Ahn'Qiraj",
+    "zone": "Silithus",
+    "entryX": 15.53,
+    "entryY": 98.02
+  },
+  {
+    "name": "Ruins of Ahn'Qiraj",
+    "zone": "Silithus",
+    "entryX": 58.67,
+    "entryY": 14.03
+  },
+  {
+    "name": "Blackrock Depths",
+    "zone": "Blackrock Mountain",
+    "entryX": 23.88,
+    "entryY": 9.6
+  },
+  {
+    "name": "Blackrock Spire",
+    "zone": "Blackrock Mountain",
+    "entryX": 66,
+    "entryY": 41.5
+  },
+  {
+    "name": "Blackwing Lair",
+    "zone": "Blackrock Spire",
+    "entryX": 64,
+    "entryY": 71.5
+  },
+  {
+    "name": "Gnomeregan",
+    "zone": "Dun Morogh",
+    "entryX": 24.38,
+    "entryY": 39.8
+  },
+  {
+    "name": "Molten Core",
+    "zone": "Blackrock Depths",
+    "entryX": 38.3,
+    "entryY": 36.4
+  },
+  {
+    "name": "Naxxramas",
+    "zone": "Eastern Plaguelands",
+    "entryX": 39.93,
+    "entryY": 25.87
+  },
+  {
+    "name": "The Upper Necropolis",
+    "zone": "Eastern Plaguelands",
+    "entryX": 39.93,
+    "entryY": 25.87
+  },
+  {
+    "name": "Scarlet Monastery",
+    "zone": "Tirisfal Glades",
+    "entryX": 82.5,
+    "entryY": 33
+  },
+  {
+    "name": "Scarlet Monastery Library",
+    "zone": "Scarlet Monastery",
+    "entryX": 79,
+    "entryY": 60
+  },
+  {
+    "name": "Scarlet Monastery Armory",
+    "zone": "Scarlet Monastery",
+    "entryX": 84.3,
+    "entryY": 44.0
+  },
+  {
+    "name": "Scarlet Monastery Cathedral",
+    "zone": "Scarlet Monastery",
+    "entryX": 79.9,
+    "entryY": 27.9
+  },
+  {
+    "name": "Scarlet Monastery Graveyard",
+    "zone": "Scarlet Monastery",
+    "entryX": 68.2,
+    "entryY": 21
+  },
+  {
+    "name": "Scholomance",
+    "zone": "Western Plaguelands",
+    "entryX": 69.77,
+    "entryY": 73.51
+  },
+  {
+    "name": "Shadowfang Keep",
+    "zone": "Silverpine Forest",
+    "entryX": 44.86,
+    "entryY": 67.86
+  },
+  {
+    "name": "Stratholme",
+    "zone": "Eastern Plaguelands",
+    "entryX": 27.09,
+    "entryY": 12.6
+  },
+  {
+    "name": "The Deadmines",
+    "zone": "Westfall",
+    "entryX": 42.56,
+    "entryY": 71.72
+  },
+  {
+    "name": "The Stockade",
+    "zone": "Stormwind City",
+    "entryX": 51,
+    "entryY": 69.5
+  },
+  {
+    "name": "The Temple of Atal'Hakkar",
+    "zone": "Swamp of Sorrows",
+    "entryX": 69.83,
+    "entryY": 54.14
+  },
+  {
+    "name": "Uldaman",
+    "zone": "Badlands",
+    "entryX": 36.74,
+    "entryY": 28.16
+  },
+  {
+    "name": "Zul'Gurub",
+    "zone": "Stranglethorn Vale",
+    "entryX": 53.81,
+    "entryY": 17.57
+  },
+  {
+    "name": "Dragonmaw Retreat",
+    "zone": "Wetlands",
+    "entryX": 67,
+    "entryY": 64
+  },
+  {
+    "name": "Stormwrought Ruins",
+    "zone": "Balor",
+    "entryX": 51.67,
+    "entryY": 65
+  },
+  {
+    "name": "Crescent Grove",
+    "zone": "Ashenvale",
+    "entryX": 51.4,
+    "entryY": 78
+  },
+  {
+    "name": "Hateforge Quarry",
+    "zone": "Burning Steppes",
+    "entryX": 95,
+    "entryY": 56
+  },
+  {
+    "name": "Karazhan Crypt",
+    "zone": "Deadwind Pass",
+    "entryX": 47,
+    "entryY": 74.94
+  },
+  {
+    "name": "The Black Morass",
+    "zone": "Tanaris",
+    "entryX": 65.5,
+    "entryY": 50
+  },
+  {
+    "name": "Stormwind Vault",
+    "zone": "Stormwind City",
+    "entryX": 65.5,
+    "entryY": 58.2
+  },
+  {
+    "name": "Gilneas City",
+    "zone": "Gilneas",
+    "entryX": 28,
+    "entryY": 30
+  },
+  {
+    "name": "Lower Karazhan Halls",
+    "zone": "Deadwind Pass",
+    "entryX": 47,
+    "entryY": 74.94
+  },
+  {
+    "name": "Emerald Sanctum",
+    "zone": "Hyjal",
+    "entryX": 18,
+    "entryY": 54.5
+  }
+]

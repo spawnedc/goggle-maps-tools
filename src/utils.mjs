@@ -7,7 +7,7 @@ export const removeKeyFromObject = (obj, key) => {
 export const arrayByObjecKey = (array, key, removeKey) =>
   array.reduce((agg, obj) => {
     agg[obj[key]] = removeKey ? removeKeyFromObject(obj, key) : obj
-    return acc
+    return agg
   }, {})
 
 export const floatToPrecision = (number, precision) => {

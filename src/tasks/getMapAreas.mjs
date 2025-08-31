@@ -26,16 +26,21 @@ const areaById = arrayByObjecKey(areaTable, 'ID')
 const buildMapAreas = (filteredWorldMapAreas, continentId) => {
   const baseId = continentId * 1000
   const areasData = filteredWorldMapAreas.map((worldMapArea) => {
+    // const map = mapById[worldMapArea.MapID]
     const area = areaById[worldMapArea.AreaID]
     const isCity = hasFlag(area.Flags, IS_CITY_FLAG)
+    // worldMapArea.AreaName.toLowerCase().endsWith('entrance')
     const isInstance = continentId === INSTANCE_CONTINENT_ID
     const isRaid = continentId === RAID_CONTINENT_ID
     const isBattleground = continentId === BATTLEGROUND_CONTINENT_ID
+    const isNormalZone = !isInstance && !isRaid && !isBattleground
     return {
       name: area.AreaName,
+      // name: isNormalZone ? area.AreaName : map.MapName,
       areaId: worldMapArea.AreaID,
       mapId: worldMapArea.ID,
       ...getXYScale(worldMapArea),
+      ...(!isNormalZone ? { scale: 0.04 } : {}),
       overlay: worldMapArea.AreaName.toLocaleLowerCase(),
       faction: area.FactionGroupMask, // 0: contested, 2: alliance, 4: horde
       ...(isCity ? { isCity: true } : {}),

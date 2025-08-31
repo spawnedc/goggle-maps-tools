@@ -1,6 +1,10 @@
 import { lstatSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { EXPORT_DIR, INSTANCE_CONTINENT_ID } from '../constants.mjs'
+import { removeKeyFromObject } from '../utils.mjs'
+import instanceToLocation from './instance-to-location.json' with {
+  type: 'json',
+}
 
 const getInstanceFolders = () => {
   const baseDir = join(EXPORT_DIR, 'dbc', 'Interface', 'WorldMap')
@@ -39,8 +43,26 @@ export const getInstanceInfo = (mapAreas) => {
       )
       unusedFolders.unshift(instance.overlay)
 
+      const instanceInfo = instanceToLocation.find(
+        (i) => i.name === instance.name,
+      )
+      let ownerMapId
+      let entryX
+      let entryY
+      if (instanceInfo) {
+        entryX = instanceInfo.entryX
+        entryY = instanceInfo.entryY
+        const loc = allAreas.find((a) => a.name === instanceInfo.zone)
+        ownerMapId = loc?.spwMapId
+      } else {
+        console.info('Instance info not found for', instance.name)
+      }
+
       return {
         spwMapId: instance.spwMapId,
+        ownerMapId,
+        entryX,
+        entryY,
         floors: unusedFolders.map((folder, index) => ({
           x: 0,
           y: index * -100,
@@ -49,7 +71,7 @@ export const getInstanceInfo = (mapAreas) => {
       }
     })
     .reduce((acc, cur) => {
-      acc[cur.spwMapId] = cur.floors
+      acc[cur.spwMapId] = removeKeyFromObject(cur, 'spwMapId')
       return acc
     }, {})
 

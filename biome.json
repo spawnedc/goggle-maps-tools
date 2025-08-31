@@ -15,7 +15,13 @@
     "includes": ["src/**/*", "!tools/extractJsonFromDbc/schemas"]
   },
   "linter": {
-    "enabled": true
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUndeclaredVariables": "error"
+      }
+    }
   },
   "javascript": {
     "formatter": {

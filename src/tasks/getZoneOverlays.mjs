@@ -42,6 +42,7 @@ export const getWorldMapOverlay = (mapAreas) => {
     let x1, y1, x2, y2, w, h
 
     if (area.isCity) {
+      console.info(area.name)
       const cityArea = worldMapAreaByAreaId[area.areaId]
       const { LocLeft, LocRight, LocTop, LocBottom } = cityArea
       const yardsPerMapUnit = 5
@@ -66,6 +67,21 @@ export const getWorldMapOverlay = (mapAreas) => {
       HotspotString: `${x1}^${y1}^${w}^${h}^${TextureName}`,
       SpwMapId: area.spwMapId,
     }
+  }
+
+  const cityToHotspot = (area) => {
+    const cityArea = worldMapAreaByAreaId[area.areaId]
+    const { LocLeft, LocRight, LocTop, LocBottom } = cityArea
+    const yardsPerMapUnit = 5
+    const x1 = floatToPrecision(-LocLeft / yardsPerMapUnit, 2)
+    const y1 = floatToPrecision(LocBottom / yardsPerMapUnit, 2)
+    const x2 = floatToPrecision(-LocRight / yardsPerMapUnit, 2)
+    const y2 = floatToPrecision(LocTop / yardsPerMapUnit, 2)
+
+    const w = floatToPrecision(x2 - x1, 2)
+    const h = floatToPrecision(y2 - y1, 2)
+
+    return `${x1}^${y1}^${w}^${h}^${area.name}`
   }
 
   const overlays = enrichedMapAreas
@@ -100,6 +116,14 @@ export const getWorldMapOverlay = (mapAreas) => {
     acc[key] = hotspots[key].map(({ HotspotString }) => HotspotString).join('~')
     return acc
   }, {})
+
+  const citiesWithoutHotspots = enrichedMapAreas.filter(
+    (area) => !groupedHotspots[area.spwMapId] && area.isCity,
+  )
+
+  citiesWithoutHotspots.forEach((city) => {
+    groupedHotspots[city.spwMapId] = cityToHotspot(city)
+  })
 
   return {
     overlays: groupedOverlays,
