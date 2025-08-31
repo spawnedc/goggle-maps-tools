@@ -6,6 +6,7 @@ import { EXPORT_DIR } from './constants.mjs'
 import { getMapAreas } from './tasks/getMapAreas.mjs'
 import { getWorldMapOverlay } from './tasks/getZoneOverlays.mjs'
 import { getMinimapBlocks } from './tasks/getMinimapBlocks.mjs'
+import { getInstanceInfo } from './tasks/getInstanceInfo.mjs'
 
 const LUA_DIR = join(EXPORT_DIR, 'lua')
 
@@ -28,6 +29,19 @@ const mapAreasContent = [
 ]
 writeFileSync(join(LUA_DIR, `Map.Area.lua`), mapAreasContent.join('\n'))
 fileList.push(`Map.Area.lua`)
+
+console.info('Instance info...')
+const instanceInfo = getInstanceInfo(mapAreas)
+const instanceInfoLuaContent = jsObjectToLuaPretty(instanceInfo)
+const instanceInfoContent = [
+  `setfenv(1, ${namespace})`,
+  `${namespace}.Map.InstanceInfo = ${instanceInfoLuaContent}`,
+]
+writeFileSync(
+  join(LUA_DIR, `Map.InstanceInfo.lua`),
+  instanceInfoContent.join('\n'),
+)
+fileList.push(`Map.InstanceInfo.lua`)
 
 console.info('Map overlays...')
 const { overlays, hotspots } = getWorldMapOverlay(mapAreas)

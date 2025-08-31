@@ -29,7 +29,8 @@ const go = async () => {
     'textures\\Minimap\\md5translate.trs',
     dbcPath,
   )
-  await extractFileList(wowPath, 'interface.MPQ', dbcPath)
+
+  await extractMPQ(wowPath, 'interface.MPQ', 'Interface\\WorldMap\\*', dbcPath)
 
   await convertDbcToJson(dbcFilesToExtract, {
     dbcPath: join(dbcPath, DBC_DIR),
