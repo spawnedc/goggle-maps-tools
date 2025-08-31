@@ -1,6 +1,6 @@
+import { lstatSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { EXPORT_DIR, INSTANCE_CONTINENT_ID } from '../constants.mjs'
-import { readdirSync, lstatSync } from 'fs'
-import { join } from 'path'
 
 const getInstanceFolders = () => {
   const baseDir = join(EXPORT_DIR, 'dbc', 'Interface', 'WorldMap')

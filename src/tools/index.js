@@ -3,10 +3,10 @@
 // 2. convert DBCs to JSON -> node-dbc-reader
 // 3. Should be able to do it with a clean install (no data and exports folders)
 
-import { join } from 'path'
-import { EXPORT_DIR, DBC_DIR } from '../constants.mjs'
-import { extractMPQ, extractFileList } from './extractMPQ.js'
+import { join } from 'node:path'
+import { DBC_DIR, EXPORT_DIR } from '../constants.mjs'
 import convertDbcToJson from './extractJsonFromDbc/index.js'
+import { extractFileList, extractMPQ } from './extractMPQ.js'
 
 const [, , wowPath, testFile] = process.argv
 

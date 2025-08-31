@@ -1,7 +1,6 @@
-import { existsSync, writeFileSync, mkdirSync } from 'fs'
-
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import DBC from './dbc.js'
-import { join } from 'path'
 
 const extractDBC = async (dbcName, { schema, dbcPath, outDir }) => {
   console.log(`Reading ${dbcName}.dbc file`)
@@ -22,7 +21,7 @@ const extractDBC = async (dbcName, { schema, dbcPath, outDir }) => {
   }
 
   writeFileSync(file, result)
-  console.log('Output file created: ' + `${dbcName}.json`)
+  console.log('Output file created:', `${dbcName}.json`)
 }
 
 /**

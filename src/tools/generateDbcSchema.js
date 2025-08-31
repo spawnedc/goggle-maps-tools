@@ -14,25 +14,23 @@ const generateDbcSchema = () => {
   const tables = result.Definition.Table
 
   const tableData = tables.reduce((acc, curr) => {
-    return {
-      ...acc,
-      [curr._attributes.Name]: Array.isArray(curr.Field)
-        ? curr.Field.map((field) => {
-            if (field._attributes.ArraySize) {
-              return [
-                ...Array(parseInt(field._attributes.ArraySize, 10)).keys(),
-              ].map((index) => ({
-                name: `${field._attributes.Name}_${index + 1}`,
-                type: field._attributes.Type,
-              }))
-            }
-            return {
-              name: field._attributes.Name,
+    acc[curr._attributes.Name] = Array.isArray(curr.Field)
+      ? curr.Field.flatMap((field) => {
+          if (field._attributes.ArraySize) {
+            return [
+              ...Array(parseInt(field._attributes.ArraySize, 10)).keys(),
+            ].map((index) => ({
+              name: `${field._attributes.Name}_${index + 1}`,
               type: field._attributes.Type,
-            }
-          }).flat()
-        : [],
-    }
+            }))
+          }
+          return {
+            name: field._attributes.Name,
+            type: field._attributes.Type,
+          }
+        })
+      : []
+    return acc
   }, {})
 
   const schemaFolder = `${BASE_DIR}/src/tools/extractJsonFromDbc/schemas/vanilla`

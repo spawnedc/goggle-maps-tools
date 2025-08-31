@@ -1,7 +1,7 @@
-import { readdir } from 'fs/promises'
-import { existsSync, mkdirSync } from 'fs'
-import { join } from 'path'
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
+import { existsSync, mkdirSync } from 'node:fs'
+import { readdir } from 'node:fs/promises'
+import { join } from 'node:path'
 import { BASE_DIR } from '../constants.mjs'
 
 const BASE_COMMAND = `${BASE_DIR}/bin/MPQExtractor`

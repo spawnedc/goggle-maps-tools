@@ -5,22 +5,19 @@ export const removeKeyFromObject = (obj, key) => {
   return copy
 }
 export const arrayByObjecKey = (array, key, removeKey) =>
-  array.reduce(
-    (agg, obj) => ({
-      ...agg,
-      [obj[key]]: removeKey ? removeKeyFromObject(obj, key) : obj,
-    }),
-    {},
-  )
+  array.reduce((agg, obj) => {
+    agg[obj[key]] = removeKey ? removeKeyFromObject(obj, key) : obj
+    return acc
+  }, {})
 
 export const floatToPrecision = (number, precision) => {
-  const adjuster = Math.pow(10, precision)
+  const adjuster = 10 ** precision
   return Math.round(number * adjuster) / adjuster
 }
 
 // According to carbonite, LocLeft: y1, LocRight: y2, LocTop: x1, LocBottom: x2
 // Data comes from WorldMapArea.dbc
-export const getXYScale = ({ LocLeft, LocRight, LocTop, LocBottom }) => {
+export const getXYScale = ({ LocLeft, LocRight, LocTop }) => {
   const scale = (-LocRight + LocLeft) / 500
   const x = -LocLeft / 5
   const y = -LocTop / 5
@@ -34,7 +31,7 @@ export const getXYScale = ({ LocLeft, LocRight, LocTop, LocBottom }) => {
 
 const flags = []
 for (let i = 0; i < 32; i++) {
-  flags.push(Math.pow(2, i))
+  flags.push(2 ** i)
 }
 
 export const getFlagsFromMask = (mask) => {

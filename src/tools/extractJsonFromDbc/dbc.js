@@ -1,5 +1,6 @@
-import { readFile } from 'fs/promises'
-import path from 'path'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
+
 const MAGIC_NUMBER = 1128416343 // TODO: what's this?
 
 class DBC {
@@ -23,10 +24,10 @@ class DBC {
   parseStringBlock(buffer) {
     let pointer = 0
     let currentString = ''
-    let strings = []
+    const strings = []
 
     for (let i = 0; i < buffer.length; i++) {
-      let byte = buffer[i]
+      const byte = buffer[i]
 
       if (byte === 0) {
         strings[pointer - currentString.length] = currentString
@@ -42,7 +43,6 @@ class DBC {
   }
 
   async toJSON() {
-    const dbc = this
     const schemaFields = await this.getSchema()
 
     this.signature = ''
@@ -53,51 +53,49 @@ class DBC {
     return readFile(this.path)
       .then((data) => data)
       .then((buffer) => {
-        dbc.signature = buffer.toString('utf8', 0, 4)
+        this.signature = buffer.toString('utf8', 0, 4)
 
-        if (dbc.signature !== 'WDBC') {
+        if (this.signature !== 'WDBC') {
           throw new Error(
-            "DBC '" +
-              path +
-              "' has an invalid signature and is therefore not valid",
+            `DBC "${path}" has an invalid signature and is therefore not valid`,
           )
         }
 
         if (buffer.readUInt32LE(0) !== MAGIC_NUMBER) {
           throw new Error(
-            "File isn't valid DBC (missing magic number: " + MAGIC_NUMBER + ')',
+            `File isn't valid DBC (missing magic number: ${MAGIC_NUMBER})`,
           )
         }
 
-        dbc.fields = buffer.readUInt32LE(8)
-        dbc.records = buffer.readUInt32LE(4)
-        dbc.recordSize = buffer.readUInt32LE(12)
+        this.fields = buffer.readUInt32LE(8)
+        this.records = buffer.readUInt32LE(4)
+        this.recordSize = buffer.readUInt32LE(12)
 
         /**@type {buffer} */
         let recordBlock
         /**@type {buffer} */
         let recordData
-        let stringBlockPosition = buffer.length - buffer.readUInt32LE(16)
-        let strings = dbc.parseStringBlock(buffer.slice(stringBlockPosition))
+        const stringBlockPosition = buffer.length - buffer.readUInt32LE(16)
+        const strings = this.parseStringBlock(buffer.slice(stringBlockPosition))
 
         recordBlock = buffer.slice(20, stringBlockPosition)
 
         let rows
 
-        dbc.rows = rows = []
+        this.rows = rows = []
 
-        for (let i = 0; i < dbc.records; i++) {
-          let row = {}
+        for (let i = 0; i < this.records; i++) {
+          const row = {}
           recordData = recordBlock.slice(
-            i * dbc.recordSize,
-            (i + 1) * dbc.recordSize,
+            i * this.recordSize,
+            (i + 1) * this.recordSize,
           )
           let pointer = 0
 
-          schemaFields.forEach(function (key, index) {
+          schemaFields.forEach((key, index) => {
             let value
-            let type = key.type
-            let colName = key.name || 'field_' + (index + 1)
+            const type = key.type
+            const colName = key.name || `field_${index + 1}`
 
             switch (type) {
               case 'int':
@@ -142,7 +140,7 @@ class DBC {
           rows.push(row)
         }
 
-        return dbc.rows
+        return this.rows
       })
   }
 }

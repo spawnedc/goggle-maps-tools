@@ -1,12 +1,12 @@
-import { existsSync, writeFileSync, mkdirSync, copyFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { jsObjectToLuaPretty } from 'json_to_lua'
-import { join, resolve } from 'path'
 
 import { EXPORT_DIR } from './constants.mjs'
-import { getMapAreas } from './tasks/getMapAreas.mjs'
-import { getWorldMapOverlay } from './tasks/getZoneOverlays.mjs'
-import { getMinimapBlocks } from './tasks/getMinimapBlocks.mjs'
 import { getInstanceInfo } from './tasks/getInstanceInfo.mjs'
+import { getMapAreas } from './tasks/getMapAreas.mjs'
+import { getMinimapBlocks } from './tasks/getMinimapBlocks.mjs'
+import { getWorldMapOverlay } from './tasks/getZoneOverlays.mjs'
 
 const LUA_DIR = join(EXPORT_DIR, 'lua')
 
@@ -75,9 +75,9 @@ writeFileSync(
 fileList.push(`Map.MinimapBlocks.lua`)
 
 if (copyTo && existsSync(copyTo)) {
-  fileList.forEach((file) =>
-    copyFileSync(join(LUA_DIR, file), join(copyTo, file)),
-  )
+  fileList.forEach((file) => {
+    copyFileSync(join(LUA_DIR, file), join(copyTo, file))
+  })
 }
 
 console.info('Done!')

@@ -1,13 +1,11 @@
-import continents from '../../exports/json/WorldMapContinent.json' with {
-  type: 'json',
-}
-import map from '../../exports/json/Map.json' with { type: 'json' }
 import areaTable from '../../exports/json/AreaTable.json' with { type: 'json' }
+import map from '../../exports/json/Map.json' with { type: 'json' }
 import worldMapArea from '../../exports/json/WorldMapArea.json' with {
   type: 'json',
 }
-
-import { arrayByObjecKey, getXYScale, hasFlag } from '../utils.mjs'
+import continents from '../../exports/json/WorldMapContinent.json' with {
+  type: 'json',
+}
 import {
   BATTLEGROUND_CONTINENT_ID,
   INSTANCE_CONTINENT_ID,
@@ -15,6 +13,7 @@ import {
   IS_CITY_FLAG,
   RAID_CONTINENT_ID,
 } from '../constants.mjs'
+import { arrayByObjecKey, getXYScale, hasFlag } from '../utils.mjs'
 
 const ID_MAP = {
   1: 2,

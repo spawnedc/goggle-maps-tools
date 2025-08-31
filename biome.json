@@ -15,7 +15,7 @@
     "includes": ["src/**/*", "!tools/extractJsonFromDbc/schemas"]
   },
   "linter": {
-    "enabled": false
+    "enabled": true
   },
   "javascript": {
     "formatter": {
@@ -36,6 +36,6 @@
     }
   },
   "assist": {
-    "enabled": false
+    "enabled": true
   }
 }

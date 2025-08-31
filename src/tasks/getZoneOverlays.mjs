@@ -69,14 +69,13 @@ export const getWorldMapOverlay = (mapAreas) => {
   }
 
   const overlays = enrichedMapAreas
-    .map((area) => {
+    .flatMap((area) => {
       const areaIdToUse = AREA_ID_OVERRIDES[area.areaId] || area.areaId
       const overlays =
         overlaysByMapId[area.mapId] || overlaysByAreaId[areaIdToUse]
 
       return overlays?.map((overlay) => overlayToHotspot(overlay, area)) || []
     })
-    .flat()
     .filter(Boolean)
 
   const groups = Object.groupBy(overlays, (o) => o.MapArea)
