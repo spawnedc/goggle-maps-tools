@@ -4,11 +4,11 @@
 // 3. Should be able to do it with a clean install (no data and exports folders)
 
 import { join } from 'path'
-import { EXPORT_DIR } from '../constants.mjs'
-import extractMPQ from './extractMPQ.js'
+import { EXPORT_DIR, DBC_DIR } from '../constants.mjs'
+import { extractMPQ, extractFileList } from './extractMPQ.js'
 import convertDbcToJson from './extractJsonFromDbc/index.js'
 
-const [, , wowPath] = process.argv
+const [, , wowPath, testFile] = process.argv
 
 const dbcFilesToExtract = [
   'WorldMapContinent',
@@ -22,18 +22,23 @@ const dbcPath = join(EXPORT_DIR, 'dbc')
 const jsonPath = join(EXPORT_DIR, 'json')
 
 const go = async () => {
-  await extractMPQ(wowPath, 'dbc.MPQ', `DBFilesClient\\*`, dbcPath)
+  await extractMPQ(wowPath, 'dbc.MPQ', `${DBC_DIR}\\*`, dbcPath)
   await extractMPQ(
     wowPath,
     'texture.MPQ',
-    ['textures\\Minimap\\md5translate.trs'],
+    'textures\\Minimap\\md5translate.trs',
     dbcPath,
   )
+  await extractFileList(wowPath, 'interface.MPQ', dbcPath)
 
   await convertDbcToJson(dbcFilesToExtract, {
-    dbcPath,
+    dbcPath: join(dbcPath, DBC_DIR),
     outDir: jsonPath,
   })
 }
 
-go()
+if (testFile) {
+  await extractFileList(wowPath, `${testFile}.MPQ`, dbcPath)
+} else {
+  go()
+}

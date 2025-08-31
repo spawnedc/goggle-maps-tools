@@ -4,6 +4,9 @@ import process from 'process'
 export const BASE_DIR = process.cwd()
 export const EXPORT_DIR = path.join(BASE_DIR, 'exports')
 
+export const DBC_DIR = 'DBFilesClient'
+export const MINIMAP_DIR = 'textures/Minimap'
+
 // See: https://wowdev.wiki/DB/AreaTable
 export const IS_CITY_FLAG = 9 // 0x00000100 = 256 = 2 ^ 8 = indexes start from 0, hence 9. I know.
 export const IS_ARENA_FLAG = 7

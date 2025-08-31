@@ -1,11 +1,12 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { EXPORT_DIR } from '../constants.mjs'
+import { EXPORT_DIR, MINIMAP_DIR } from '../constants.mjs'
 
 export const getMinimapBlocks = () => {
-  const contents = readFileSync(join(EXPORT_DIR, 'dbc', 'md5translate.trs'), {
-    encoding: 'utf-8',
-  })
+  const contents = readFileSync(
+    join(EXPORT_DIR, 'dbc', MINIMAP_DIR, 'md5translate.trs'),
+    { encoding: 'utf-8' },
+  )
 
   const supportedMaps = ['Azeroth', 'Kalimdor']
 

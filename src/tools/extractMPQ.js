@@ -25,12 +25,12 @@ const getPatchFiles = async (dataDir) => {
  * @param {string} exportDir Directory to export the files to
  * @param {boolean} keepFolderStructure Whether to keep folder structure or not. Default is false
  */
-const extractMPQ = async (
+export const extractMPQ = async (
   dataDir,
   dbcFile,
   filesToExport,
   exportDir,
-  keepFolderStructure,
+  keepFolderStructure = true,
 ) => {
   const patchFiles = await getPatchFiles(dataDir)
   const exportList = Array.isArray(filesToExport)
@@ -56,4 +56,28 @@ const extractMPQ = async (
   execSync(command.join(' \\\n\t'))
 }
 
-export default extractMPQ
+/**
+ * Exports the list of files from MPQ files
+ * @param {string} dataDir Wow Data directory where the MPQ files are stored
+ * @param {string} dbcFile DBC file name to extract. It shouldn't be an absolute path
+ * @param {string} exportDir Directory to export the files to
+ */
+export const extractFileList = async (dataDir, dbcFile, exportDir) => {
+  const patchFiles = await getPatchFiles(dataDir)
+  const fileName = `${dbcFile.split('.')[0]}.txt`
+  const outputFile = join(exportDir, fileName)
+  const command = [
+    BASE_COMMAND,
+    `"${join(dataDir, dbcFile)}"`,
+    ...patchFiles.map((p) => `-p "${p}"`),
+    `-l ${outputFile}`,
+  ]
+
+  if (!existsSync(exportDir)) {
+    mkdirSync(exportDir, { recursive: true })
+  }
+
+  console.info('Extracting from', dbcFile, '...')
+  execSync(command.join(' \\\n\t'))
+  console.info('Extracted file list of', dbcFile, 'to', outputFile)
+}
