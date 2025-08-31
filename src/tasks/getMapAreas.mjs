@@ -8,17 +8,53 @@ import worldMapArea from '../../exports/json/WorldMapArea.json' with {
 }
 
 import { arrayByObjecKey, getXYScale, hasFlag } from '../utils.mjs'
-import { IS_CITY_FLAG } from '../constants.mjs'
+import {
+  BATTLEGROUND_CONTINENT_ID,
+  INSTANCE_CONTINENT_ID,
+  IS_ARENA_FLAG,
+  IS_CITY_FLAG,
+  RAID_CONTINENT_ID,
+} from '../constants.mjs'
 
 const ID_MAP = {
   1: 2,
   2: 1,
 }
 
-export const getMapAreas = () => {
-  const mapById = arrayByObjecKey(map, 'ID')
-  const areaById = arrayByObjecKey(areaTable, 'ID')
+const mapById = arrayByObjecKey(map, 'ID')
+const areaById = arrayByObjecKey(areaTable, 'ID')
 
+const buildMapAreas = (filteredWorldMapAreas, continentId) => {
+  const baseId = continentId * 1000
+  const areasData = filteredWorldMapAreas.map((worldMapArea) => {
+    const area = areaById[worldMapArea.AreaID]
+    const isCity = hasFlag(area.Flags, IS_CITY_FLAG)
+    const isInstance = continentId === INSTANCE_CONTINENT_ID
+    const isRaid = continentId === RAID_CONTINENT_ID
+    const isBattleground = continentId === BATTLEGROUND_CONTINENT_ID
+    return {
+      name: area.AreaName,
+      areaId: worldMapArea.AreaID,
+      mapId: worldMapArea.ID,
+      ...getXYScale(worldMapArea),
+      overlay: worldMapArea.AreaName.toLocaleLowerCase(),
+      faction: area.FactionGroupMask, // 0: contested, 2: alliance, 4: horde
+      ...(isCity ? { isCity: true } : {}),
+      ...(isInstance ? { isInstance: true } : {}),
+      ...(isRaid ? { isRaid: true } : {}),
+      ...(isBattleground ? { isBattleground: true } : {}),
+    }
+  })
+
+  areasData.sort((a, b) => a.name.localeCompare(b.name))
+
+  return areasData.map((a, index) => ({
+    id: baseId + index + 1,
+    ...a,
+  }))
+}
+
+export const getMapAreas = () => {
   const data = continents.map((continent) => {
     const continentAreaData = worldMapArea.find(
       (wma) => wma.MapID === continent.MapID && wma.AreaID === 0,
@@ -35,7 +71,8 @@ export const getMapAreas = () => {
     // However, according to the game, they are swapped...
     // Only the `baseId` calculation below is affected.
     // So we have to do dirty work here.
-    const baseId = (ID_MAP[continent.ID] || continent.ID) * 1000
+    const continentIdToUse = ID_MAP[continent.ID] || continent.ID
+    const baseId = continentIdToUse * 1000
 
     const continentData = {
       id: baseId,
@@ -43,33 +80,37 @@ export const getMapAreas = () => {
       ...getXYScale(continentAreaData),
     }
 
-    const areas = worldMapArea.filter(
+    const continentMapAreas = worldMapArea.filter(
       (wma) => wma.MapID === continent.MapID && wma.AreaID !== 0,
     )
 
-    const areasData = areas.map((worldMapArea, index) => {
-      const area = areaById[worldMapArea.AreaID]
-      return {
-        name: area.AreaName,
-        areaId: worldMapArea.AreaID,
-        mapId: worldMapArea.ID,
-        ...getXYScale(worldMapArea),
-        overlay: worldMapArea.AreaName.toLocaleLowerCase(),
-        faction: area.FactionGroupMask, // 0: contested, 2: alliance, 4: horde
-        ...(hasFlag(area.Flags, IS_CITY_FLAG) ? { isCity: true } : {}),
-      }
-    })
+    const areasData = buildMapAreas(continentMapAreas, continentIdToUse)
 
-    areasData.sort((a, b) => a.name.localeCompare(b.name))
-
-    return [
-      continentData,
-      ...areasData.map((a, index) => ({
-        id: baseId + index + 1, // Lua indexes start from 1
-        ...a,
-      })),
-    ]
+    return [continentData, ...areasData]
   })
+
+  // InstanceType = 0: none, 1: party (5-man dungeon), 2: raid, 3: pvp
+  const mapsByInstanceType = (instanceType) =>
+    worldMapArea
+      .filter((wma) => {
+        const hasAreaId = wma.AreaID !== 0
+        const map = mapById[wma.MapID]
+        const isInstance = map?.InstanceType === instanceType
+        const area = hasAreaId ? areaById[wma.AreaID] : undefined
+        const isArena = hasFlag(area?.Flags || 0, IS_ARENA_FLAG)
+
+        return hasAreaId && isInstance && !isArena
+      })
+      .toSorted((a, b) => a.AreaName.localeCompare(b.AreaName))
+
+  const instances = buildMapAreas(mapsByInstanceType(1), INSTANCE_CONTINENT_ID)
+  const raids = buildMapAreas(mapsByInstanceType(2), RAID_CONTINENT_ID)
+  const battlegrounds = buildMapAreas(
+    mapsByInstanceType(3),
+    BATTLEGROUND_CONTINENT_ID,
+  )
+
+  data.push(...instances, ...raids, ...battlegrounds)
 
   const worldAreasById = arrayByObjecKey(
     data.filter((d) => d).flat(),
